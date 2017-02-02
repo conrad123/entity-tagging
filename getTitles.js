@@ -26,6 +26,17 @@ module.exports = function(callback) {
     				if(obj_pe_alias[i].id === obj_pe[j].id){
     					obj_pe[j].pe[0] = obj_pe[j].pe[0].replace(/ \((.*?)\)/, "");
     					obj_pe[j].pe = unique(obj_pe[j].pe.concat(obj_pe_alias[i].pe));
+                        let reg_is_company = / inc[.]| dept\.| corp\.| co\./i;
+                        if(reg_is_company.test(obj_pe[j].pe[0])) {
+                            let split_pe = obj_pe[j].pe[0].split(' ');
+                            reg_is_company = /inc[.]|dept\.|corp\.|co\./i;
+                            for(q in split_pe) {
+                                if(reg_is_company.test(split_pe[q]) ){
+                                    split_pe.splice(q,1);  
+                                }
+                            }
+                            obj_pe[j].pe = obj_pe[j].pe.concat([split_pe.join(' ')]);
+                        }
                         obj_pe[j].pe.sort(function(a,b) {
                             return b.length-a.length;
                         });

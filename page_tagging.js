@@ -36,19 +36,20 @@ fs.readFile(articoli_keywords, function(err_keywords, data_keywords) {
 			var pe_count = 0;
 			var se_count = 0;
 			var seeds_count = 0;
-			for(var j=0; j<se.length; j++) {
-				regex = new RegExp("\\b"+se[j]+"\\b", "g");
-				data_articoli[i] = data_articoli[i].replace(regex, "["+j+"|SE] ");
-			}
 			for(var j=0; j<pe.length; j++) {
-				regex = new RegExp("\\b"+pe[j]+"\\b", "ig");
+				regex = new RegExp(pe[j]+'[ .,;:"]', "ig");
 				data_articoli[i] = data_articoli[i].replace(regex, "["+j+"|PE] ");
 			}
+			for(var j=0; j<se.length; j++) {
+				regex = new RegExp(se[j]+'[ .,;:"]', "g");
+				data_articoli[i] = data_articoli[i].replace(regex, "["+j+"|SE] ");
+			}
 			for(var j=0; j<seeds.length; j++) {
-				regex = new RegExp("\\bthe "+seeds[j]+"\\b", "ig");
+				regex = new RegExp("the "+seeds[j]+'[ .,;:"]', "ig");
 				data_articoli[i] = data_articoli[i].replace(regex, "["+j+"|SEED] ");	
 			}
 
+			
 			for(var j=0; j<pe.length; j++) {
 				regex = new RegExp("\\["+j+"\\|PE\\]", "ig");
 				data_articoli[i] = data_articoli[i].replace(regex, "["+pe[j]+"|PE]");
@@ -61,6 +62,7 @@ fs.readFile(articoli_keywords, function(err_keywords, data_keywords) {
 				regex = new RegExp("\\["+j+"\\|SE\\]", "g");
 				data_articoli[i] = data_articoli[i].replace(regex, "["+se[j]+"|SE]");
 			}
+			
 
 			var matches = [];
 			matches = data_articoli[i].match(/\|PE]/ig);
